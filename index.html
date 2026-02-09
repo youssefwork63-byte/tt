@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Game Quiz Empire</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+        :root {
+            --bg-dark: #050816;
+            --bg-card: #111827;
+            --accent: #f97316;
+            --accent-soft: rgba(249, 115, 22, 0.2);
+            --accent-2: #22c55e;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Global layout */
+        .game-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .game-sidebar {
+            width: 270px;
+            background: linear-gradient(180deg, #020617 0, #020617 40%, #0b1120 100%);
+            border-inline-end: 1px solid rgba(148, 163, 184, 0.15);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 1.25rem 1rem;
+            z-index: 100;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 0, #f97316, #7c2d12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fefce8;
+            font-size: 1.4rem;
+            box-shadow: 0 0 18px rgba(249, 115, 22, 0.6);
+        }
+
+        .brand-title {
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .brand-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-top: 1.25rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 999px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding: 0.45rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.18s ease;
+        }
+
+        .nav-pills .nav-link i {
+            font-size: 0.9rem;
+        }
+
+        .nav-pills .nav-link:hover {
+            background: rgba(15, 23, 42, 0.9);
+            color: #e5e7eb;
+            transform: translateX(-2px);
+        }
+
+        .nav-pills .nav-link.active {
+            background: linear-gradient(90deg, #f97316, #22c55e);
+            color: #0b1120;
+            box-shadow: 0 0 18px rgba(249, 115, 22, 0.5);
+        }
+
+        .sidebar-footer {
+            margin-top: 1.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.15);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Main content */
+        .game-main {
+            flex: 1;
+            padding: 1.25rem 1.5rem 2rem;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .top-badge {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .top-badge i {
+            color: var(--accent);
+        }
+
+        .top-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-ghost {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text-main);
+            font-size: 0.8rem;
+            padding: 0.35rem 0.8rem;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(15, 23, 42, 1);
+        }
+
+        .avatar-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 999px;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .avatar-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 0, #22c55e, #14532d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .avatar-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .avatar-name {
+            font-size: 0.75rem;
+        }
+
+        .avatar-points {
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+
+        /* Sections */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards */
+        .game-card {
+            background: radial-gradient(circle at top left, rgba(249, 115, 22, 0.12), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.12), transparent 55%),
+                #020617;
+            border-radius: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(148, 163, 184, 0.12), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .game-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .game-card-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.7rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            color: var(--text-muted);
+        }
+
+        .pill-accent {
+            border-color: rgba(249, 115, 22, 0.7);
+            color: var(--accent);
+            background: rgba(249, 115, 22, 0.08);
+        }
+
+        .pill-green {
+            border-color: rgba(34, 197, 94, 0.7);
+            color: var(--accent-2);
+            background: rgba(34, 197, 94, 0.08);
+        }
+
+        .btn-game {
+            border-radius: 999px;
+            border: none;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: linear-gradient(90deg, #f97316, #22c55e);
+            color: #0b1120;
+            font-weight: 600;
+            box-shadow: 0 0 18px rgba(249, 115, 22, 0.6);
+        }
+
+        .btn-game:hover {
+            filter: brightness(1.05);
+        }
+
+        .btn-game-ghost {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            padding: 0.35rem 0.8rem;
+            font-size: 0.8rem;
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-main);
+        }
+
+        .btn-game-ghost:hover {
+            background: rgba(15, 23, 42, 1);
+        }
+
+        /* Hero / Dashboard */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .hero-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-orbit {
+            position: relative;
+            height: 210px;
+        }
+
+        .orbit-center {
+            position: absolute;
+            inset: 50%;
+            transform: translate(-50%, -50%);
+            width: 110px;
+            height: 110px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 0, #f97316, #7c2d12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fefce8;
+            font-size: 1.6rem;
+            box-shadow: 0 0 30px rgba(249, 115, 22, 0.8);
+        }
+
+        .orbit-ring {
+            position: absolute;
+            inset: 18px;
+            border-radius: 999px;
+            border: 1px dashed rgba(148, 163, 184, 0.4);
+            animation: spin 18s linear infinite;
+        }
+
+        .orbit-dot {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 0, #22c55e, #14532d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #e5e7eb;
+        }
+
+        .orbit-dot:nth-child(1) {
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .orbit-dot:nth-child(2) {
+            bottom: -10px;
+            left: 10%;
+        }
+
+        .orbit-dot:nth-child(3) {
+            bottom: 10%;
+            right: -10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Auth forms */
+        .auth-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            color: var(--text-main);
+            font-size: 0.85rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(15, 23, 42, 1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.6);
+            color: var(--text-main);
+        }
+
+        .form-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Tables */
+        .table-dark {
+            --bs-table-bg: rgba(15, 23, 42, 0.9);
+            --bs-table-striped-bg: rgba(15, 23, 42, 0.7);
+            --bs-table-border-color: rgba(55, 65, 81, 0.8);
+            font-size: 0.8rem;
+        }
+
+        .table-dark thead {
+            background: rgba(15, 23, 42, 1);
+        }
+
+        /* Badges */
+        .badge-rank {
+            border-radius: 999px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.7rem;
+        }
+
+        .badge-rank-1 {
+            background: linear-gradient(90deg, #facc15, #f97316);
+            color: #0b1120;
+        }
+
+        .badge-rank-2 {
+            background: linear-gradient(90deg, #e5e7eb, #9ca3af);
+            color: #020617;
+        }
+
+        .badge-rank-3 {
+            background: linear-gradient(90deg, #f97316, #b45309);
+            color: #0b1120;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .game-wrapper {
+                flex-direction: column;
+            }
+
+            .game-sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-inline-end: none;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+            }
+
+            .hero-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .game-main {
+                padding-inline: 0.75rem;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sounds -->
+    <audio id="sound-click" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+    <audio id="sound-success" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+    <audio id="sound-error" src="https://actions.google.com/sounds/v1/cartoon/woodpecker_pecking.ogg"></audio>
+    <audio id="sound-ambient" loop src="https://actions.google.com/sounds/v1/ambiences/space_engine.ogg"></audio>
+
+    <div class="game-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="game-sidebar">
+            <div class="brand-logo">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div>
+                    <div class="brand-title">QUIZ EMPIRE</div>
+                    <div class="brand-sub">منصة مسابقات تفاعلية ضخمة</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section-title">الحساب</div>
+            <ul class="nav nav-pills flex-column mb-2">
+                <li class="nav-item">
+                    <button class="nav-link active" data-view="dashboard">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>الواجهة الرئيسية</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="signup">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>التسجيل</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="login">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>تسجيل الدخول</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="reset">
+                        <i class="fa-solid fa-key"></i>
+                        <span>إعادة تعيين كلمة المرور</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="profile">
+                        <i class="fa-solid fa-id-badge"></i>
+                        <span>البروفايل</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">أنماط اللعب</div>
+            <ul class="nav nav-pills flex-column mb-2">
+                <li class="nav-item">
+                    <button class="nav-link" data-view="single">
+                        <i class="fa-solid fa-user"></i>
+                        <span>النمط الفردي</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="versus">
+                        <i class="fa-solid fa-people-arrows"></i>
+                        <span>النمط التنافسي</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="topics">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>اختيار الموضوع</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="battle">
+                        <i class="fa-solid fa-users-rays"></i>
+                        <span>النمط الجماعي</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">النقاط و المتصدرين</div>
+            <ul class="nav nav-pills flex-column mb-2">
+                <li class="nav-item">
+                    <button class="nav-link" data-view="leaderboard">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span>لوحة المتصدرين</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="earn-ads">
+                        <i class="fa-solid fa-rectangle-ad"></i>
+                        <span>الإعلانات</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="earn-referrals">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>الإحالات</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="earn-purchase">
+                        <i class="fa-solid fa-coins"></i>
+                        <span>شراء النقاط</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="sidebar-section-title">لوحة الإدارة</div>
+            <ul class="nav nav-pills flex-column mb-2">
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-users">
+                        <i class="fa-solid fa-users-gear"></i>
+                        <span>إدارة المستخدمين</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-questions">
+                        <i class="fa-solid fa-database"></i>
+                        <span>بنك الأسئلة</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-competitions">
+                        <i class="fa-solid fa-swords"></i>
+                        <span>المنافسات</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-wallet">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>السحب والدفع</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-ads">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>إعلانات النظام</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-referrals">
+                        <i class="fa-solid fa-diagram-project"></i>
+                        <span>إدارة الإحالات</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-settings">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>الإعدادات العامة</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="admin-reports">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>التقارير</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer d-flex justify-content-between align-items-center">
+                <span>v0.1 Prototype</span>
+                <button id="btn-toggle-sound" class="btn btn-sm btn-outline-light rounded-pill" style="font-size: 0.7rem;">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="game-main">
+            <!-- Top bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <div class="top-badge">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>منصة مسابقات تفاعلية بطابع الألعاب</span>
+                    </div>
+                    <div class="top-title" id="current-view-title">الواجهة الرئيسية</div>
+                </div>
+                <div class="top-bar-right">
+                    <button class="btn-ghost" id="btn-quick-play">
+                        <i class="fa-solid fa-play"></i>
+                        تشغيل سريع
+                    </button>
+                    <div class="avatar-pill">
+                        <div class="avatar-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="avatar-info">
+                            <span class="avatar-name">ضيف جديد</span>
+                            <span class="avatar-points"><i class="fa-solid fa-coins"></i> 0 نقطة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <section id="view-dashboard" class="view-section active">
+                <div class="hero-grid">
+                    <div class="game-card">
+                        <div class="game-card-header">
+                            <div>
+                                <div class="game-card-title">مرحباً بك في عالم Quiz Empire</div>
+                                <div class="game-card-sub">
+                                    اختر نمط اللعب، اجمع النقاط، تسلق لوحة المتصدرين، وادخل المنافسات الكبرى.
+                                </div>
+                            </div>
+                            <span class="pill pill-accent">
+                                <i class="fa-solid fa-fire-flame-curved"></i> موسم التجربة
+                            </span>
+                        </div>
+
+                        <div class="hero-tags">
+                            <span class="pill"><i class="fa-solid fa-user"></i> فردي</span>
+                            <span class="pill"><i class="fa-solid fa-people-group"></i> جماعي</span>
+                            <span class="pill"><i class="fa-solid fa-trophy"></i> جوائز</span>
+                            <span class="pill"><i class="fa-solid fa-coins"></i> نقاط</span>
+                            <span class="pill"><i class="fa-solid fa-bolt"></i> تحديات سريعة</span>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            <button class="btn-game" data-view-target="single">
+                                <i class="fa-solid fa-play"></i>
+                                ابدأ النمط الفردي
+                            </button>
+                            <button class="btn-game-ghost" data-view-target="versus">
+                                <i class="fa-solid fa-people-arrows"></i>
+                                تحدى لاعباً آخر
+                            </button>
+                            <button class="btn-game-ghost" data-view-target="battle">
+                                <i class="fa-solid fa-users-rays"></i>
+                                ادخل معركة جماعية
+                            </button>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col-6 col-md-3">
+                                <div class="small text-muted" style="font-size: 0.7rem;">إجمالي اللاعبين</div>
+                                <div style="font-weight: 700;">+12,540</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="small text-muted" style="font-size: 0.7rem;">مباريات اليوم</div>
+                                <div style="font-weight: 700;">384 مباراة</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="small text-muted" style="font-size: 0.7rem;">أعلى سلسلة فوز</div>
+                                <div style="font-weight: 700;">27 فوز متتالي</div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="small text-muted" style="font-size: 0.7rem;">مجموع الجوائز</div>
+                                <div style="font-weight: 700;">+120,000 نقطة</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="game-card-header">
+                            <div>
+                                <div class="game-card-title">مجرة الأنماط</div>
+                                <div class="game-card-sub">كل نمط يفتح تجربة مختلفة تماماً.</div>
+                            </div>
+                            <span class="pill pill-green">
+                                <i class="fa-solid fa-circle-nodes"></i> تفاعلي
+                            </span>
+                        </div>
+
+                        <div class="hero-orbit">
+                            <div class="orbit-center">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <div class="orbit-ring"></div>
+                            <div class="orbit-dot" title="فردي">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="orbit-dot" title="تنافسي">
+                                <i class="fa-solid fa-people-arrows"></i>
+                            </div>
+                            <div class="orbit-dot" title="جماعي">
+                                <i class="fa-solid fa-users-rays"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-4">
+                        <div class="game-card h-100">
+                            <div class="game-card-header">
+                                <div>
+                                    <div class="game-card-title">أهداف اليوم</div>
+                                    <div class="game-card-sub">أكمل المهام اليومية لتحصل على مكافآت إضافية.</div>
+                                </div>
+                                <span class="pill">
+                                    <i class="fa-solid fa-calendar-day"></i> اليوم
+                                </span>
+                            </div>
+                            <ul class="list-unstyled mb-3" style="font-size: 0.8rem;">
+                                <li class="mb-2 d-flex justify-content-between align-items-center">
+                                    <span><i class="fa-solid fa-circle-check text-success"></i> العب 3 جولات فردية</span>
+                                    <span class="text-warning"><i class="fa-solid fa-coins"></i> +50</span>
+                                </li>
+                                <li class="mb-2 d-flex justify-content-between align-items-center">
+                                    <span><i class="fa-regular fa-circle"></i> اربح مباراة تنافسية</span>
+                                    <span class="text-warning"><i class="fa-solid fa-coins"></i> +80</span>
+                                </li>
+                                <li class="mb-2 d-flex justify-content-between align-items-center">
+                                    <span><i class="fa-regular fa-circle"></i> شارك في معركة جماعية</span>
+                                    <span class="text-warning"><i class="fa-solid fa-coins"></i> +120</span>
+                                </li>
+                            </ul>
+                            <button class="btn-game-ghost w-100" data-view-target="leaderboard">
+                                عرض لوحة المتصدرين
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="game-card h-100">
+                            <div class="game-card-header">
+                                <div>
+                                    <div class="game-card-title">طرق كسب النقاط</div>
+                                    <div class="game-card-sub">اختر الطريقة الأنسب لك لزيادة رصيدك.</div>
+                                </div>
+                                <span class="pill pill-accent">
+                                    <i class="fa-solid fa-coins"></i> نقاط
+                                </span>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn-game-ghost" data-view-target="earn-ads">
+                                    <i class="fa-solid fa-rectangle-ad"></i> مشاهدة الإعلانات
+                                </button>
+                                <button class="btn-game-ghost" data-view-target="earn-referrals">
+                                    <i class="fa-solid fa-user-group"></i> نظام الإحالات
+                                </button>
+                                <button class="btn-game-ghost" data-view-target="earn-purchase">
+                                    <i class="fa-solid fa-credit-card"></i> شراء النقاط
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="game-card h-100">
+                            <div class="game-card-header">
+                                <div>
+                                    <div class="game-card-title">لوحة الإدارة</div>
+                                    <div class="game-card-sub">نظرة سريعة على أهم أقسام الإدارة.</div>
+                                </div>
+                                <span class="pill pill-green">
+                                    <i class="fa-solid fa-shield-halved"></i> مسؤول
+                                </span>
+                            </div>
+                            <div class="row g-2" style="font-size: 0.8rem;">
+                                <div class="col-6">
+                                    <div class="p-2 rounded-3" style="background: rgba(15,23,42,0.9);">
+                                        <div class="mb-1"><i class="fa-solid fa-users-gear text-sky-400"></i> المستخدمون</div>
+                                        <div class="text-muted">+1,200 مستخدم نشط</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 rounded-3" style="background: rgba(15,23,42,0.9);">
+                                        <div class="mb-1"><i class="fa-solid fa-database text-amber-400"></i> بنك الأسئلة</div>
+                                        <div class="text-muted">+8,500 سؤال</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 rounded-3" style="background: rgba(15,23,42,0.9);">
+                                        <div class="mb-1"><i class="fa-solid fa-wallet text-emerald-400"></i> المحفظة</div>
+                                        <div class="text-muted">طلبات سحب قيد المراجعة</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 rounded-3" style="background: rgba(15,23,42,0.9);">
+                                        <div class="mb-1"><i class="fa-solid fa-chart-line text-pink-400"></i> التقارير</div>
+                                        <div class="text-muted">إحصائيات يومية</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-game-ghost w-100 mt-2" data-view-target="admin-users">
+                                الدخول إلى لوحة الإدارة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SIGN UP -->
+            <section id="view-signup" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">إنشاء حساب جديد</div>
+                            <div class="game-card-sub">انضم إلى عالم Quiz Empire وابدأ رحلتك.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-user-plus"></i> مجاني
+                        </span>
+                    </div>
+
+                    <div class="auth-grid">
+                        <form id="form-signup" class="game-card" style="background: rgba(15,23,42,0.9);">
+                            <div class="mb-2">
+                                <label class="form-label">الاسم الكامل</label>
+                                <input type="text" class="form-control" required />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">اسم المستخدم</label>
+                                <input type="text" class="form-control" required />
+                                <div class="form-text">سيظهر هذا الاسم في لوحة المتصدرين.</div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" class="form-control" required />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">كلمة المرور</label>
+                                <input type="password" class="form-control" required />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">تأكيد كلمة المرور</label>
+                                <input type="password" class="form-control" required />
+                            </div>
+                            <div class="form-check mb-2" style="font-size: 0.8rem;">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required />
+                                <label class="form-check-label" for="termsCheck">
+                                    أوافق على الشروط والأحكام.
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-game w-100">
+                                <i class="fa-solid fa-user-plus"></i> إنشاء الحساب
+                            </button>
+                        </form>
+
+                        <div class="game-card">
+                            <div class="mb-2">
+                                <div class="game-card-title">مزايا الحساب</div>
+                                <div class="game-card-sub">لماذا تحتاج إلى حساب؟</div>
+                            </div>
+                            <ul class="list-unstyled" style="font-size: 0.8rem;">
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                                    حفظ تقدمك وسجل المباريات.
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                                    المشاركة في المنافسات الموسمية.
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                                    سحب الأرباح والنقاط القابلة للتحويل.
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                                    تخصيص البروفايل والأفاتار.
+                                </li>
+                            </ul>
+                            <button class="btn-game-ghost w-100" data-view-target="login">
+                                لدي حساب بالفعل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOGIN -->
+            <section id="view-login" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">تسجيل الدخول</div>
+                            <div class="game-card-sub">ادخل إلى حسابك واستكمل رحلتك.</div>
+                        </div>
+                        <span class="pill">
+                            <i class="fa-solid fa-right-to-bracket"></i> مرحباً بعودتك
+                        </span>
+                    </div>
+
+                    <div class="auth-grid">
+                        <form id="form-login" class="game-card" style="background: rgba(15,23,42,0.9);">
+                            <div class="mb-2">
+                                <label class="form-label">البريد الإلكتروني أو اسم المستخدم</label>
+                                <input type="text" class="form-control" required />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">كلمة المرور</label>
+                                <input type="password" class="form-control" required />
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.8rem;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" />
+                                    <label class="form-check-label" for="rememberMe">
+                                        تذكرني
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-link p-0 text-decoration-none" data-view-target="reset" style="font-size: 0.8rem;">
+                                    نسيت كلمة المرور؟
+                                </button>
+                            </div>
+                            <button type="submit" class="btn-game w-100">
+                                <i class="fa-solid fa-right-to-bracket"></i> دخول
+                            </button>
+                        </form>
+
+                        <div class="game-card">
+                            <div class="mb-2">
+                                <div class="game-card-title">تسجيل الدخول السريع</div>
+                                <div class="game-card-sub">طرق بديلة للدخول.</div>
+                            </div>
+                            <div class="d-grid gap-2 mb-2">
+                                <button class="btn-game-ghost">
+                                    <i class="fa-brands fa-google"></i> الدخول بواسطة Google
+                                </button>
+                                <button class="btn-game-ghost">
+                                    <i class="fa-brands fa-discord"></i> الدخول بواسطة Discord
+                                </button>
+                            </div>
+                            <div style="font-size: 0.8rem;">
+                                لا تملك حساباً؟
+                                <button class="btn btn-link p-0 text-decoration-none" data-view-target="signup" style="font-size: 0.8rem;">
+                                    أنشئ حساباً جديداً
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESET PASSWORD -->
+            <section id="view-reset" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">إعادة تعيين كلمة المرور</div>
+                            <div class="game-card-sub">أدخل بريدك الإلكتروني لاستعادة الوصول إلى حسابك.</div>
+                        </div>
+                        <span class="pill">
+                            <i class="fa-solid fa-key"></i> أمان الحساب
+                        </span>
+                    </div>
+
+                    <div class="auth-grid">
+                        <form id="form-reset" class="game-card" style="background: rgba(15,23,42,0.9);">
+                            <div class="mb-2">
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" class="form-control" required />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">رمز التحقق (اختياري في النسخة التجريبية)</label>
+                                <input type="text" class="form-control" placeholder="سيصلك على بريدك في النسخة الفعلية" />
+                            </div>
+                            <button type="submit" class="btn-game w-100">
+                                <i class="fa-solid fa-paper-plane"></i> إرسال رابط إعادة التعيين
+                            </button>
+                        </form>
+
+                        <div class="game-card">
+                            <div class="mb-2">
+                                <div class="game-card-title">نصائح أمان</div>
+                                <div class="game-card-sub">حافظ على حسابك آمناً.</div>
+                            </div>
+                            <ul class="list-unstyled" style="font-size: 0.8rem;">
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                    استخدم كلمة مرور قوية وفريدة.
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                    لا تشارك بيانات الدخول مع أي شخص.
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                    فعّل التحقق بخطوتين عند توفره.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROFILE -->
+            <section id="view-profile" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">البروفايل الشخصي</div>
+                            <div class="game-card-sub">إدارة بياناتك، الأفاتار، والإحصائيات.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-user-gear"></i> لاعب
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="text-center mb-2">
+                                    <div class="avatar-circle mx-auto mb-2" style="width: 70px; height: 70px; font-size: 1.8rem;">
+                                        <i class="fa-solid fa-user-ninja"></i>
+                                    </div>
+                                    <div style="font-weight: 700;">Guest Player</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">مستوى 1 - مبتدئ</div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn-game-ghost">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> تغيير الأفاتار
+                                    </button>
+                                    <button class="btn-game-ghost">
+                                        <i class="fa-solid fa-palette"></i> تخصيص الواجهة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">البيانات الأساسية</div>
+                                </div>
+                                <form style="font-size: 0.8rem;">
+                                    <div class="mb-2">
+                                        <label class="form-label">اسم العرض</label>
+                                        <input type="text" class="form-control" value="Guest Player" />
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">الدولة</label>
+                                        <select class="form-select">
+                                            <option>غير محدد</option>
+                                            <option>السعودية</option>
+                                            <option>مصر</option>
+                                            <option>الإمارات</option>
+                                            <option>المغرب</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">اللغة المفضلة</label>
+                                        <select class="form-select">
+                                            <option>العربية</option>
+                                            <option>الإنجليزية</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn-game w-100">
+                                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">إحصائيات اللاعب</div>
+                                </div>
+                                <ul class="list-unstyled" style="font-size: 0.8rem;">
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>إجمالي النقاط</span>
+                                        <span class="text-warning"><i class="fa-solid fa-coins"></i> 0</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>عدد المباريات</span>
+                                        <span>0</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>نسبة الفوز</span>
+                                        <span>0%</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>أطول سلسلة فوز</span>
+                                        <span>0</span>
+                                    </li>
+                                </ul>
+                                <button class="btn-game-ghost w-100" data-view-target="leaderboard">
+                                    عرض ترتيبك في المتصدرين
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SINGLE PLAYER -->
+            <section id="view-single" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">النمط الفردي</div>
+                            <div class="game-card-sub">اختبر نفسك في جولة سريعة ضد الزمن.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-stopwatch"></i> جولة سريعة
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">إعدادات الجولة</div>
+                                </div>
+                                <form id="form-single-settings" style="font-size: 0.8rem;">
+                                    <div class="mb-2">
+                                        <label class="form-label">الموضوع</label>
+                                        <select class="form-select">
+                                            <option>عام</option>
+                                            <option>تقنية</option>
+                                            <option>تاريخ</option>
+                                            <option>رياضة</option>
+                                            <option>أفلام ومسلسلات</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">عدد الأسئلة</label>
+                                        <select class="form-select">
+                                            <option>5 أسئلة</option>
+                                            <option>10 أسئلة</option>
+                                            <option>15 سؤال</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">المدة الزمنية</label>
+                                        <select class="form-select">
+                                            <option>بدون مؤقت</option>
+                                            <option>10 ثوان لكل سؤال</option>
+                                            <option>20 ثانية لكل سؤال</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn-game w-100" id="btn-start-single">
+                                        <i class="fa-solid fa-play"></i> ابدأ الجولة
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2 d-flex justify-content-between align-items-center">
+                                    <div class="game-card-title">ساحة الأسئلة</div>
+                                    <span class="pill">
+                                        <i class="fa-solid fa-circle-question"></i> نموذج تجريبي
+                                    </span>
+                                </div>
+                                <div id="single-quiz-area" style="font-size: 0.9rem;">
+                                    <p class="text-muted mb-2">
+                                        عند الضغط على "ابدأ الجولة" سيتم عرض سؤال تجريبي مع خيارات وإظهار نتيجة فورية.
+                                    </p>
+                                    <div class="border rounded-3 p-2 mb-2" style="border-color: rgba(148,163,184,0.4);">
+                                        <div class="mb-2">
+                                            <span class="badge bg-secondary me-1">سؤال #1</span>
+                                            <span>ما هي عاصمة فرنسا؟</span>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button class="btn-game-ghost quiz-option" data-correct="false">برلين</button>
+                                            <button class="btn-game-ghost quiz-option" data-correct="true">باريس</button>
+                                            <button class="btn-game-ghost quiz-option" data-correct="false">مدريد</button>
+                                            <button class="btn-game-ghost quiz-option" data-correct="false">روما</button>
+                                        </div>
+                                    </div>
+                                    <div id="single-quiz-result" class="mt-2" style="font-size: 0.85rem;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VERSUS MODE -->
+            <section id="view-versus" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">النمط التنافسي (1 ضد 1)</div>
+                            <div class="game-card-sub">تحدَّ لاعباً آخر في جولة مباشرة.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-swords"></i> مواجهة
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">إنشاء غرفة</div>
+                                </div>
+                                <form style="font-size: 0.8rem;">
+                                    <div class="mb-2">
+                                        <label class="form-label">اسم الغرفة</label>
+                                        <input type="text" class="form-control" value="غرفة التحدي" />
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">الموضوع</label>
+                                        <select class="form-select">
+                                            <option>عام</option>
+                                            <option>تقنية</option>
+                                            <option>تاريخ</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">نظام النقاط</label>
+                                        <select class="form-select">
+                                            <option>10 نقاط لكل إجابة صحيحة</option>
+                                            <option>20 نقطة لكل إجابة صحيحة</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn-game w-100">
+                                        <i class="fa-solid fa-plus"></i> إنشاء الغرفة
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2 d-flex justify-content-between align-items-center">
+                                    <div class="game-card-title">مباراة تجريبية</div>
+                                    <span class="pill">
+                                        <i class="fa-solid fa-signal"></i> في الانتظار
+                                    </span>
+                                </div>
+                                <div class="row g-2 align-items-center" style="font-size: 0.85rem;">
+                                    <div class="col-md-5 text-center">
+                                        <div class="avatar-circle mx-auto mb-1" style="width: 60px; height: 60px;">
+                                            <i class="fa-solid fa-user-ninja"></i>
+                                        </div>
+                                        <div>أنت</div>
+                                        <div class="text-warning"><i class="fa-solid fa-coins"></i> 0</div>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <i class="fa-solid fa-bolt fa-2x text-warning"></i>
+                                        <div class="text-muted" style="font-size: 0.75rem;">VS</div>
+                                    </div>
+                                    <div class="col-md-5 text-center">
+                                        <div class="avatar-circle mx-auto mb-1" style="width: 60px; height: 60px; background: radial-gradient(circle at 30% 0, #f97316, #7c2d12);">
+                                            <i class="fa-solid fa-user-secret"></i>
+                                        </div>
+                                        <div>خصم عشوائي</div>
+                                        <div class="text-warning"><i class="fa-solid fa-coins"></i> 0</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 d-flex justify-content-center gap-2">
+                                    <button class="btn-game-ghost">
+                                        <i class="fa-solid fa-link"></i> نسخ رابط الدعوة
+                                    </button>
+                                    <button class="btn-game">
+                                        <i class="fa-solid fa-play"></i> بدء المباراة التجريبية
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TOPIC SELECTION -->
+            <section id="view-topics" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">اختيار الموضوع</div>
+                            <div class="game-card-sub">اختر عالم الأسئلة الذي تريد اللعب فيه.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-layer-group"></i> مواضيع متعددة
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9); cursor: pointer;">
+                                <div class="mb-2">
+                                    <div class="game-card-title">عام</div>
+                                    <div class="game-card-sub">خليط من كل المجالات.</div>
+                                </div>
+                                <div class="text-muted" style="font-size: 0.8rem;">
+                                    أسئلة متنوعة في الثقافة العامة، الجغرافيا، التاريخ، العلوم، والمزيد.
+                                </div>
+                                <div class="mt-2 d-flex justify-content-between" style="font-size: 0.8rem;">
+                                    <span><i class="fa-solid fa-circle-question"></i> +2,000 سؤال</span>
+                                    <span><i class="fa-solid fa-signal"></i> صعوبة متوسطة</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9); cursor: pointer;">
+                                <div class="mb-2">
+                                    <div class="game-card-title">تقنية</div>
+                                    <div class="game-card-sub">عالم البرمجة والتقنية.</div>
+                                </div>
+                                <div class="text-muted" style="font-size: 0.8rem;">
+                                    أسئلة عن لغات البرمجة، الأنظمة، الشبكات، الذكاء الاصطناعي، وأكثر.
+                                </div>
+                                <div class="mt-2 d-flex justify-content-between" style="font-size: 0.8rem;">
+                                    <span><i class="fa-solid fa-circle-question"></i> +1,200 سؤال</span>
+                                    <span><i class="fa-solid fa-signal"></i> صعوبة عالية</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9); cursor: pointer;">
+                                <div class="mb-2">
+                                    <div class="game-card-title">تاريخ</div>
+                                    <div class="game-card-sub">أحداث وشخصيات.</div>
+                                </div>
+                                <div class="text-muted" style="font-size: 0.8rem;">
+                                    أسئلة عن الحضارات، الحروب، الاكتشافات، والشخصيات التاريخية.
+                                </div>
+                                <div class="mt-2 d-flex justify-content-between" style="font-size: 0.8rem;">
+                                    <span><i class="fa-solid fa-circle-question"></i> +900 سؤال</span>
+                                    <span><i class="fa-solid fa-signal"></i> صعوبة متوسطة</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QUIZ BATTLE -->
+            <section id="view-battle" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">النمط الجماعي (Quiz Battle)</div>
+                            <div class="game-card-sub">انضم إلى معركة جماعية تضم عشرات اللاعبين.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-users-rays"></i> جماعي
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">الغرف المتاحة</div>
+                                </div>
+                                <ul class="list-unstyled" style="font-size: 0.8rem;">
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>#Battle-101 (عام)</span>
+                                        <span class="text-muted">12/20 لاعبين</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>#Tech-War (تقنية)</span>
+                                        <span class="text-muted">8/15 لاعبين</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>#History-Arena (تاريخ)</span>
+                                        <span class="text-muted">5/10 لاعبين</span>
+                                    </li>
+                                </ul>
+                                <button class="btn-game w-100">
+                                    <i class="fa-solid fa-users-rays"></i> انضم إلى غرفة عشوائية
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2 d-flex justify-content-between align-items-center">
+                                    <div class="game-card-title">لوبي المعركة التجريبية</div>
+                                    <span class="pill">
+                                        <i class="fa-solid fa-clock"></i> يبدأ بعد 00:30
+                                    </span>
+                                </div>
+                                <div class="row g-2" style="font-size: 0.8rem;">
+                                    <div class="col-md-6">
+                                        <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                            <div class="mb-1"><i class="fa-solid fa-circle-info"></i> تفاصيل المعركة</div>
+                                            <div class="text-muted">
+                                                - 10 أسئلة<br />
+                                                - 30 ثانية لكل سؤال<br />
+                                                - نقاط إضافية للإجابات السريعة
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                            <div class="mb-1"><i class="fa-solid fa-users"></i> اللاعبين المتصلين</div>
+                                            <div class="text-muted">
+                                                لاعب 1، لاعب 2، لاعب 3، ... (عرض تجريبي)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 d-flex justify-content-center gap-2">
+                                    <button class="btn-game-ghost">
+                                        <i class="fa-solid fa-comments"></i> فتح دردشة المعركة
+                                    </button>
+                                    <button class="btn-game">
+                                        <i class="fa-solid fa-play"></i> جاهز للانطلاق
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEADERBOARD -->
+            <section id="view-leaderboard" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة المتصدرين</div>
+                            <div class="game-card-sub">تعرف على أقوى اللاعبين في المنصة.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-trophy"></i> موسم تجريبي
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div style="font-size: 0.8rem;">
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-calendar-day"></i> اليوم
+                                </button>
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-calendar-week"></i> هذا الأسبوع
+                                </button>
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-calendar"></i> هذا الموسم
+                                </button>
+                            </div>
+                            <div style="font-size: 0.8rem;">
+                                <span class="pill">ترتيبك الحالي: خارج القائمة</span>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>اللاعب</th>
+                                        <th>النقاط</th>
+                                        <th>عدد المباريات</th>
+                                        <th>نسبة الفوز</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge-rank badge-rank-1">1</span></td>
+                                        <td><i class="fa-solid fa-crown text-warning"></i> KingOfQuiz</td>
+                                        <td><i class="fa-solid fa-coins text-warning"></i> 12,450</td>
+                                        <td>320</td>
+                                        <td>78%</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-rank badge-rank-2">2</span></td>
+                                        <td>BrainMaster</td>
+                                        <td><i class="fa-solid fa-coins text-warning"></i> 11,980</td>
+                                        <td>295</td>
+                                        <td>75%</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge-rank badge-rank-3">3</span></td>
+                                        <td>FastThinker</td>
+                                        <td><i class="fa-solid fa-coins text-warning"></i> 10,600</td>
+                                        <td>260</td>
+                                        <td>72%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>QuizHero</td>
+                                        <td><i class="fa-solid fa-coins text-warning"></i> 9,800</td>
+                                        <td>240</td>
+                                        <td>70%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>SmartPlayer</td>
+                                        <td><i class="fa-solid fa-coins text-warning"></i> 9,200</td>
+                                        <td>220</td>
+                                        <td>68%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EARN: ADS -->
+            <section id="view-earn-ads" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">كسب النقاط عبر الإعلانات</div>
+                            <div class="game-card-sub">شاهد إعلانات قصيرة لتحصل على نقاط إضافية.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-rectangle-ad"></i> مكافآت
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-6">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">إعلان تجريبي</div>
+                                    <div class="game-card-sub">في النسخة الفعلية سيتم تشغيل فيديو قصير.</div>
+                                </div>
+                                <div class="border rounded-3 p-3 mb-2 text-center" style="border-color: rgba(148,163,184,0.4);">
+                                    <i class="fa-solid fa-tv fa-3x text-muted mb-2"></i>
+                                    <div class="text-muted" style="font-size: 0.8rem;">
+                                        مساحة مخصصة للإعلان (محاكاة فقط).
+                                    </div>
+                                </div>
+                                <button class="btn-game w-100">
+                                    <i class="fa-solid fa-play"></i> مشاهدة إعلان والحصول على +20 نقطة
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">سياسة الإعلانات</div>
+                                </div>
+                                <ul class="list-unstyled" style="font-size: 0.8rem;">
+                                    <li class="mb-2">
+                                        <i class="fa-solid fa-circle-info text-emerald-400"></i>
+                                        يمكنك مشاهدة عدد محدود من الإعلانات يومياً.
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fa-solid fa-circle-info text-emerald-400"></i>
+                                        يتم إضافة النقاط تلقائياً بعد انتهاء الإعلان.
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fa-solid fa-circle-info text-emerald-400"></i>
+                                        في النسخة الفعلية سيتم ربط النظام بمنصة إعلانية.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EARN: REFERRALS -->
+            <section id="view-earn-referrals" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">نظام الإحالات</div>
+                            <div class="game-card-sub">ادعُ أصدقاءك لتحصل على نقاط إضافية.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-user-group"></i> مشاركة
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-6">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">رابط الإحالة الخاص بك</div>
+                                </div>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" value="https://quiz-empire.com/ref/USERNAME" readonly />
+                                    <button class="btn-game-ghost">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                                <div class="text-muted" style="font-size: 0.8rem;">
+                                    شارك هذا الرابط مع أصدقائك. عند تسجيلهم وحصولهم على نقاط، تحصل أنت أيضاً على مكافأة.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="game-card h-100" style="background: rgba(15,23,42,0.9);">
+                                <div class="mb-2">
+                                    <div class="game-card-title">إحصائيات الإحالات</div>
+                                </div>
+                                <ul class="list-unstyled" style="font-size: 0.8rem;">
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>عدد الأصدقاء المسجلين</span>
+                                        <span>0</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>النقاط المكتسبة من الإحالات</span>
+                                        <span class="text-warning"><i class="fa-solid fa-coins"></i> 0</span>
+                                    </li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <span>نسبة النشاط</span>
+                                        <span>0%</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EARN: PURCHASE -->
+            <section id="view-earn-purchase" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">شراء النقاط</div>
+                            <div class="game-card-sub">اشترِ حزم نقاط لتعزيز تقدمك.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-credit-card"></i> حزم
+                        </span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="game-card h-100 text-center" style="background: rgba(15,23,42,0.9);">
+                                <div class="game-card-title mb-1">حزمة البداية</div>
+                                <div class="text-warning mb-1"><i class="fa-solid fa-coins"></i> 500 نقطة</div>
+                                <div class="mb-2" style="font-size: 0.8rem;">سعر تجريبي: 5$</div>
+                                <button class="btn-game w-100">
+                                    <i class="fa-solid fa-cart-shopping"></i> شراء
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="game-card h-100 text-center" style="background: rgba(15,23,42,0.9); border-color: rgba(249,115,22,0.7); box-shadow: 0 0 18px rgba(249,115,22,0.4);">
+                                <div class="game-card-title mb-1">الحزمة المميزة</div>
+                                <div class="text-warning mb-1"><i class="fa-solid fa-coins"></i> 1,500 نقطة</div>
+                                <div class="mb-2" style="font-size: 0.8rem;">سعر تجريبي: 12$</div>
+                                <button class="btn-game w-100">
+                                    <i class="fa-solid fa-cart-shopping"></i> شراء
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="game-card h-100 text-center" style="background: rgba(15,23,42,0.9);">
+                                <div class="game-card-title mb-1">حزمة المحترفين</div>
+                                <div class="text-warning mb-1"><i class="fa-solid fa-coins"></i> 3,000 نقطة</div>
+                                <div class="mb-2" style="font-size: 0.8rem;">سعر تجريبي: 20$</div>
+                                <button class="btn-game w-100">
+                                    <i class="fa-solid fa-cart-shopping"></i> شراء
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: USERS -->
+            <section id="view-admin-users" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - إدارة المستخدمين</div>
+                            <div class="game-card-sub">إدارة حسابات اللاعبين، الحظر، والأدوار.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-users-gear"></i> مسؤول
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.8rem;">
+                            <div class="input-group" style="max-width: 260px;">
+                                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                <input type="text" class="form-control" placeholder="بحث عن مستخدم..." />
+                            </div>
+                            <div>
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-filter"></i> فلاتر
+                                </button>
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-plus"></i> إضافة يدويّة
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>المعرف</th>
+                                        <th>الاسم</th>
+                                        <th>الحالة</th>
+                                        <th>النقاط</th>
+                                        <th>الدور</th>
+                                        <th>إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 0.8rem;">
+                                    <tr>
+                                        <td>#1001</td>
+                                        <td>KingOfQuiz</td>
+                                        <td><span class="badge bg-success">نشط</span></td>
+                                        <td>12,450</td>
+                                        <td>لاعب</td>
+                                        <td>
+                                            <button class="btn-game-ghost btn-sm">عرض</button>
+                                            <button class="btn-game-ghost btn-sm">حظر</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#1002</td>
+                                        <td>BrainMaster</td>
+                                        <td><span class="badge bg-success">نشط</span></td>
+                                        <td>11,980</td>
+                                        <td>لاعب</td>
+                                        <td>
+                                            <button class="btn-game-ghost btn-sm">عرض</button>
+                                            <button class="btn-game-ghost btn-sm">حظر</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#1</td>
+                                        <td>Admin</td>
+                                        <td><span class="badge bg-success">نشط</span></td>
+                                        <td>0</td>
+                                        <td>مسؤول</td>
+                                        <td>
+                                            <button class="btn-game-ghost btn-sm">عرض</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: QUESTIONS BANK -->
+            <section id="view-admin-questions" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - بنك الأسئلة</div>
+                            <div class="game-card-sub">إضافة، تعديل، وحذف الأسئلة.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-database"></i> أسئلة
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.8rem;">
+                            <div>
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-plus"></i> إضافة سؤال
+                                </button>
+                                <button class="btn-game-ghost btn-sm">
+                                    <i class="fa-solid fa-file-import"></i> استيراد من ملف
+                                </button>
+                            </div>
+                            <div class="input-group" style="max-width: 260px;">
+                                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                <input type="text" class="form-control" placeholder="بحث في الأسئلة..." />
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>المعرف</th>
+                                        <th>السؤال</th>
+                                        <th>الموضوع</th>
+                                        <th>الصعوبة</th>
+                                        <th>إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 0.8rem;">
+                                    <tr>
+                                        <td>Q-001</td>
+                                        <td>ما هي عاصمة فرنسا؟</td>
+                                        <td>جغرافيا</td>
+                                        <td>سهل</td>
+                                        <td>
+                                            <button class="btn-game-ghost btn-sm">تعديل</button>
+                                            <button class="btn-game-ghost btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Q-002</td>
+                                        <td>ما هو بروتوكول نقل النص التشعبي؟</td>
+                                        <td>تقنية</td>
+                                        <td>متوسط</td>
+                                        <td>
+                                            <button class="btn-game-ghost btn-sm">تعديل</button>
+                                            <button class="btn-game-ghost btn-sm">حذف</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: COMPETITIONS -->
+            <section id="view-admin-competitions" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - المنافسات</div>
+                            <div class="game-card-sub">إدارة المواسم، الجوائز، وقواعد المنافسة.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-swords"></i> منافسات
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.8rem;">
+                            <button class="btn-game-ghost btn-sm">
+                                <i class="fa-solid fa-plus"></i> إنشاء منافسة جديدة
+                            </button>
+                            <span class="pill">عدد المنافسات النشطة: 0 (تجريبي)</span>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.8rem;">
+                            في النسخة الفعلية سيتم عرض قائمة بالمنافسات الموسمية، مع إمكانية تحديد شروط المشاركة، الجوائز، وتواريخ البداية والنهاية.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: WALLET & PAYOUTS -->
+            <section id="view-admin-wallet" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - السحب والدفع</div>
+                            <div class="game-card-sub">إدارة محافظ اللاعبين وطلبات السحب.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-wallet"></i> محفظة
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                    <div class="mb-1"><i class="fa-solid fa-coins text-warning"></i> إجمالي النقاط المتداولة</div>
+                                    <div>+120,000 نقطة (تجريبي)</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                    <div class="mb-1"><i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> طلبات السحب المعلقة</div>
+                                    <div>0 طلب (تجريبي)</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                    <div class="mb-1"><i class="fa-solid fa-circle-info text-sky-400"></i> إعدادات التحويل</div>
+                                    <div>سيتم ربطها ببوابة دفع في النسخة الفعلية.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: ADS MANAGEMENT -->
+            <section id="view-admin-ads" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - إدارة الإعلانات</div>
+                            <div class="game-card-sub">إدارة الحملات الإعلانية داخل المنصة.</div>
+                        </div>
+                        <span class="pill pill-accent">
+                            <i class="fa-solid fa-bullhorn"></i> إعلانات
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.8rem;">
+                            <button class="btn-game-ghost btn-sm">
+                                <i class="fa-solid fa-plus"></i> إضافة حملة جديدة
+                            </button>
+                            <span class="pill">عدد الحملات النشطة: 0 (تجريبي)</span>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.8rem;">
+                            في النسخة الفعلية يمكن تحديد نوع الإعلان، مدة العرض، عدد مرات الظهور، وربطه بمكافآت النقاط.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: REFERRALS MANAGEMENT -->
+            <section id="view-admin-referrals" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - إدارة الإحالات</div>
+                            <div class="game-card-sub">مراقبة نظام الإحالات ومكافآت الدعوات.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-diagram-project"></i> إحالات
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="text-muted" style="font-size: 0.8rem;">
+                            سيتم عرض إحصائيات الإحالات، أفضل اللاعبين في جلب الأصدقاء، وإدارة نسب المكافآت لكل إحالة.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: SETTINGS -->
+            <section id="view-admin-settings" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - الإعدادات العامة</div>
+                            <div class="game-card-sub">ضبط إعدادات المنصة الأساسية.</div>
+                        </div>
+                        <span class="pill">
+                            <i class="fa-solid fa-sliders"></i> إعدادات
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <form style="font-size: 0.8rem;">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">اسم المنصة</label>
+                                    <input type="text" class="form-control" value="Quiz Empire" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">اللغة الافتراضية</label>
+                                    <select class="form-select">
+                                        <option>العربية</option>
+                                        <option>الإنجليزية</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">وضع الصوت الافتراضي</label>
+                                    <select class="form-select">
+                                        <option>مفعل</option>
+                                        <option>مغلق</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">عدد الأسئلة الافتراضي في النمط الفردي</label>
+                                    <input type="number" class="form-control" value="10" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">الحد الأقصى لعدد اللاعبين في المعركة</label>
+                                    <input type="number" class="form-control" value="20" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">نسبة تحويل النقاط إلى رصيد</label>
+                                    <input type="text" class="form-control" value="1000 نقطة = 1$ (تجريبي)" />
+                                </div>
+                            </div>
+                            <button type="button" class="btn-game mt-3">
+                                <i class="fa-solid fa-floppy-disk"></i> حفظ الإعدادات
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ADMIN: REPORTS -->
+            <section id="view-admin-reports" class="view-section">
+                <div class="game-card mb-3">
+                    <div class="game-card-header">
+                        <div>
+                            <div class="game-card-title">لوحة الإدارة - التقارير</div>
+                            <div class="game-card-sub">عرض إحصائيات المنصة والأداء.</div>
+                        </div>
+                        <span class="pill pill-green">
+                            <i class="fa-solid fa-chart-line"></i> تقارير
+                        </span>
+                    </div>
+
+                    <div class="game-card" style="background: rgba(15,23,42,0.9);">
+                        <div class="row g-3" style="font-size: 0.8rem;">
+                            <div class="col-md-4">
+                                <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                    <div class="mb-1"><i class="fa-solid fa-users text-sky-400"></i> عدد المستخدمين</div>
+                                    <div>+12,540 (تجريبي)</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                    <div class="mb-1"><i class="fa-solid fa-gamepad text-emerald-400"></i> عدد المباريات</div>
+                                    <div>+38,400 (تجريبي)</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-2 rounded-3 mb-2" style="background: rgba(15,23,42,0.9);">
+                                    <div class="mb-1"><i class="fa-solid fa-coins text-amber-400"></i> النقاط الموزعة</div>
+                                    <div>+120,000 نقطة (تجريبي)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.8rem;">
+                            في النسخة الفعلية يمكن إضافة رسوم بيانية تفاعلية (Charts) لعرض تطور عدد المستخدمين، المباريات، والنقاط.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ====== BASIC VIEW SWITCHING ======
+        const navButtons = document.querySelectorAll(".game-sidebar .nav-link");
+        const sections = document.querySelectorAll(".view-section");
+        const titleEl = document.getElementById("current-view-title");
+
+        function setActiveView(viewId) {
+            sections.forEach((sec) => {
+                sec.classList.toggle("active", sec.id === "view-" + viewId);
+            });
+
+            navButtons.forEach((btn) => {
+                btn.classList.toggle("active", btn.dataset.view === viewId);
+            });
+
+            const titlesMap = {
+                dashboard: "الواجهة الرئيسية",
+                signup: "التسجيل",
+                login: "تسجيل الدخول",
+                reset: "إعادة تعيين كلمة المرور",
+                profile: "البروفايل",
+                single: "النمط الفردي",
+                versus: "النمط التنافسي",
+                topics: "اختيار الموضوع",
+                battle: "النمط الجماعي",
+                leaderboard: "لوحة المتصدرين",
+                "earn-ads": "الإعلانات - كسب النقاط",
+                "earn-referrals": "الإحالات - كسب النقاط",
+                "earn-purchase": "شراء النقاط",
+                "admin-users": "لوحة الإدارة - المستخدمون",
+                "admin-questions": "لوحة الإدارة - بنك الأسئلة",
+                "admin-competitions": "لوحة الإدارة - المنافسات",
+                "admin-wallet": "لوحة الإدارة - السحب والدفع",
+                "admin-ads": "لوحة الإدارة - الإعلانات",
+                "admin-referrals": "لوحة الإدارة - الإحالات",
+                "admin-settings": "لوحة الإدارة - الإعدادات",
+                "admin-reports": "لوحة الإدارة - التقارير",
+            };
+            titleEl.textContent = titlesMap[viewId] || "Quiz Empire";
+
+            playClickSound();
+        }
+
+        navButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const view = btn.dataset.view;
+                setActiveView(view);
+            });
+        });
+
+        // Buttons inside content that navigate to views
+        document.querySelectorAll("[data-view-target]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const target = btn.dataset.viewTarget;
+                setActiveView(target);
+            });
+        });
+
+        // Quick play -> single player
+        document.getElementById("btn-quick-play").addEventListener("click", () => {
+            setActiveView("single");
+        });
+
+        // ====== SOUNDS ======
+        const soundClick = document.getElementById("sound-click");
+        const soundSuccess = document.getElementById("sound-success");
+        const soundError = document.getElementById("sound-error");
+        const soundAmbient = document.getElementById("sound-ambient");
+        const btnToggleSound = document.getElementById("btn-toggle-sound");
+        let soundEnabled = false;
+
+        function playClickSound() {
+            if (!soundEnabled) return;
+            soundClick.currentTime = 0;
+            soundClick.play();
+        }
+
+        function playSuccessSound() {
+            if (!soundEnabled) return;
+            soundSuccess.currentTime = 0;
+            soundSuccess.play();
+        }
+
+        function playErrorSound() {
+            if (!soundEnabled) return;
+            soundError.currentTime = 0;
+            soundError.play();
+        }
+
+        btnToggleSound.addEventListener("click", () => {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                soundAmbient.volume = 0.3;
+                soundAmbient.play();
+                btnToggleSound.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            } else {
+                soundAmbient.pause();
+                btnToggleSound.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+            }
+        });
+
+        // ====== SIMPLE DEMO LOGIC: SINGLE QUIZ ======
+        const quizOptions = document.querySelectorAll(".quiz-option");
+        const quizResult = document.getElementById("single-quiz-result");
+
+        quizOptions.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const correct = btn.dataset.correct === "true";
+                quizOptions.forEach((b) => (b.disabled = true));
+                if (correct) {
+                    quizResult.innerHTML =
+                        '<span class="text-success"><i class="fa-solid fa-circle-check"></i> إجابة صحيحة! +10 نقاط (تجريبي)</span>';
+                    playSuccessSound();
+                } else {
+                    quizResult.innerHTML =
+                        '<span class="text-danger"><i class="fa-solid fa-circle-xmark"></i> إجابة خاطئة! حاول مرة أخرى في جولة جديدة.</span>';
+                    playErrorSound();
+                }
+            });
+        });
+
+        document.getElementById("btn-start-single").addEventListener("click", () => {
+            quizOptions.forEach((b) => (b.disabled = false));
+            quizResult.textContent = "";
+            playClickSound();
+        });
+
+        // ====== SIMPLE DEMO: FORMS (prevent real submit) ======
+        ["form-signup", "form-login", "form-reset"].forEach((id) => {
+            const form = document.getElementById(id);
+            if (!form) return;
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                playSuccessSound();
+                alert("هذه نسخة تجريبية - لا يتم حفظ البيانات فعلياً.");
+            });
+        });
+    </script>
+</body>
+</html>
